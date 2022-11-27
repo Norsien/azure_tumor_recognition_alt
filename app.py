@@ -63,7 +63,7 @@ def upload_image():
 		filename = secure_filename(file.filename)
 		file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-		with open(app.config['UPLOAD_FOLDER'] + '\\' + filename, mode='rb') as myfile:
+		with open(app.config['UPLOAD_FOLDER'] + filename, mode='rb') as myfile:
 			img = myfile.read()
 
 		request_json = {
