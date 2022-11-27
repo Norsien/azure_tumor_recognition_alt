@@ -79,19 +79,18 @@ def upload_image():
 		with open(request_file_name, "w") as request_file:
 			json.dump(request_json, request_file)
 			
-		if filename == 'Y13.jpg':
+		resp = ml_client.online_endpoints.invoke(
+			endpoint_name='tumor-endpoint-test11271017',
+			deployment_name="brain-mri-image-final",
+			request_file=request_file_name,
+		)
+		print(resp)
+
+		if resp["result"] == 1:
 			result = 'Tumor detected.'
 		else:
 			result = 'No tumor detected.'
-		# resp = ml_client.online_endpoints.invoke(
-		# 	endpoint_name='tumor-endpoint-test11271017',
-		# 	deployment_name="brain-mri-image-final",
-		# 	request_file=request_file_name,
-		# )
-		# print(resp)
 
-		#print('upload_image filename: ' + filename)
-		#flash('Image successfully uploaded and displayed below')
 		return render_template('upload.html', filename=filename, result = result)
 	else:
 		flash('Allowed image types are -> png, jpg, jpeg, gif')
