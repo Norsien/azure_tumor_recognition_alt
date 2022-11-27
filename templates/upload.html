@@ -1,0 +1,37 @@
+<!doctype html>
+<center>
+<title>Tumor detection</title>
+<body bgcolor=FFFAF0>
+<font face="Verdana, sans-serif" size="+1">
+<h2>Welcome to the <font size="+3">Tumour Detection App</font><br></h2>
+</center>
+Select the image in which you want to detect the tumour.
+<p>
+	{% with messages = get_flashed_messages() %}
+	  {% if messages %}
+		<ul>
+		{% for message in messages %}
+		  <li>{{ message }}</li>
+		{% endfor %}
+		</ul>
+	  {% endif %}
+	{% endwith %}
+</p>
+{% if filename %}
+	<div>
+		<img src="{{ url_for('display_image', filename=filename) }}">
+	</div>
+{% endif %}
+<form method="post" action="/" enctype="multipart/form-data">
+    <dl>
+		<p>
+			<input type="file" name="file" autocomplete="off" required>
+		</p>
+    </dl>
+    <p>
+		<input type="submit" value="Submit">
+	</p>
+</form>
+<strong>Result:</strong>
+Tumour detected/No tumour detected
+</font><br>
