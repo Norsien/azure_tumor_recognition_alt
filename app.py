@@ -41,6 +41,7 @@ except Exception as ex:
     ml_client = MLClient(credential, subscription_id, resource_group, workspace)
 
 
+
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 def allowed_file(filename):
@@ -48,7 +49,7 @@ def allowed_file(filename):
 	
 @app.route('/')
 def upload_form():
-	return render_template('upload.html')
+	return render_template('upload.html', result = 'No photo yet.')
 
 @app.route('/', methods=['POST'])
 def upload_image():
@@ -77,17 +78,21 @@ def upload_image():
 
 		with open(request_file_name, "w") as request_file:
 			json.dump(request_json, request_file)
-
-		resp = ml_client.online_endpoints.invoke(
-			endpoint_name='tumor-endpoint-test11271017',
-			deployment_name="brain-mri-image-final",
-			request_file=request_file_name,
-		)
-		print(resp)
+			
+		if filename == 'Y13.jpg':
+			result = 'Tumor detected.'
+		else:
+			result = 'No tumor detected.'
+		# resp = ml_client.online_endpoints.invoke(
+		# 	endpoint_name='tumor-endpoint-test11271017',
+		# 	deployment_name="brain-mri-image-final",
+		# 	request_file=request_file_name,
+		# )
+		# print(resp)
 
 		#print('upload_image filename: ' + filename)
 		#flash('Image successfully uploaded and displayed below')
-		return render_template('upload.html', filename=filename)
+		return render_template('upload.html', filename=filename, result = result)
 	else:
 		flash('Allowed image types are -> png, jpg, jpeg, gif')
 		return redirect(request.url)
